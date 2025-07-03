@@ -1,0 +1,17 @@
+name: CD Deployment
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    needs: test
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build Windows EXE
+      run: pip install pyinstaller && pyinstaller --onefile --windowed main.py
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: bible-quote-app
+        path: dist\main.exe
